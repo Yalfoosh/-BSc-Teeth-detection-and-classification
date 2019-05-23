@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ElementTree
 
 from typing import Iterable, Tuple
 from pathlib import Path
+from PIL import Image
 
 import assertion
 
@@ -105,6 +106,22 @@ class Mark:
             string += "{},{},{},{},{},{}\n".format(path, *marking[0], new_class)
 
         return string.strip()
+
+
+class Picture:
+    def __init__(self, image_path: str):
+        assertion.assert_valid_type(image_path, str)
+        assertion.assert_valid_image(image_path)
+
+        self.name = Path(image_path)
+        self.extension = self.name.suffix
+        self.name = self.name.stem
+
+        self.image = Image.open(fp=image_path)
+        self.resolution = self.image.size()
+
+    def save(self, path: str):
+        assertion.assert_valid_type(path, str)
 
 
 some_path = os.path.join(os.curdir, "00401.xml")
