@@ -9,3 +9,49 @@ __pycache__/assertion.cpython-36.pyc
 .idea/encodings.xml
 .idea/vcs.xml
 .idea/
+__pycache__/data.cpython-36.pyc
+__pycache__/selection.cpython-36.pyc
+__pycache__/util.cpython-36.pyc
+__pycache__/values.cpython-36.pyc
+data/mock/csv/data.csv
+data/mock/img/00001.jpg
+data/mock/img/00002.jpg
+data/mock/img/00003.jpg
+data/mock/img/00004.jpg
+data/mock/img/00005.jpg
+data/mock/img/00006.jpg
+data/mock/img_enhanced/00001 blur 3 -50.0% -25.0% 0.0% +25.0% +50.0%.jpg
+data/mock/img_enhanced/00001 blur 3 -50.0% -25.0% 0.0% +25.0%.jpg
+data/mock/img_enhanced/00001 blur 3 -50.0% -25.0% 0.0%.jpg
+data/mock/img_enhanced/00001 blur 3 -50.0% -25.0%.jpg
+data/mock/img_enhanced/00001 blur 3 -50.0%.jpg
+data/mock/img_enhanced/00001 blur 3.jpg
+data/mock/img_enhanced/00002 blur 3 -50.0% -25.0% 0.0% +25.0% +50.0%.jpg
+data/mock/img_enhanced/00002 blur 3 -50.0% -25.0% 0.0% +25.0%.jpg
+data/mock/img_enhanced/00002 blur 3 -50.0% -25.0% 0.0%.jpg
+data/mock/img_enhanced/00002 blur 3 -50.0% -25.0%.jpg
+data/mock/img_enhanced/00002 blur 3 -50.0%.jpg
+data/mock/img_enhanced/00002 blur 3.jpg
+data/mock/img_enhanced/00003 blur 3 -50.0% -25.0% 0.0% +25.0% +50.0%.jpg
+data/mock/img_enhanced/00003 blur 3 -50.0% -25.0% 0.0% +25.0%.jpg
+data/mock/img_enhanced/00003 blur 3 -50.0% -25.0% 0.0%.jpg
+data/mock/img_enhanced/00003 blur 3 -50.0% -25.0%.jpg
+data/mock/img_enhanced/00003 blur 3 -50.0%.jpg
+data/mock/img_enhanced/00003 blur 3.jpg
+data/mock/img_enhanced/00004 blur 3 -50.0% -25.0% 0.0% +25.0% +50.0%.jpg
+data/mock/img_enhanced/00004 blur 3 -50.0% -25.0% 0.0% +25.0%.jpg
+data/mock/img_enhanced/00004 blur 3 -50.0% -25.0% 0.0%.jpg
+data/mock/img_enhanced/00004 blur 3 -50.0% -25.0%.jpg
+data/mock/img_enhanced/00004 blur 3 -50.0%.jpg
+data/mock/img_enhanced/00004 blur 3.jpg
+data/mock/img_enhanced/00005 blur 3 -50.0% -25.0% 0.0% +25.0% +50.0%.jpg
+data/mock/img_enhanced/00005 blur 3 -50.0% -25.0% 0.0% +25.0%.jpg
+data/mock/img_enhanced/00005 blur 3 -50.0% -25.0% 0.0%.jpg
+data/mock/img_enhanced/00005 blur 3 -50.0% -25.0%.jpg
+data/mock/img_enhanced/00005 blur 3 -50.0%.jpg
+data/mock/img_enhanced/00005 blur 3.jpg
+data/mock/xml/00001.xml
+data/mock/xml/00002.xml
+data/mock/xml/00003.xml
+data/mock/xml/00004.xml
+data/mock/xml/00005.xml

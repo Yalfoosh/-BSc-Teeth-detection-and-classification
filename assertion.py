@@ -13,6 +13,10 @@ def assert_valid_type(polled_object, supposed_type: Type):
 
 
 # region Value Validity
+def assert_int_in_range(number: int, interval: Tuple[int, int]):
+    assert interval[0] <= number <= interval[1]
+
+
 def assert_float_in_range(number: float, interval: Tuple[float, float]):
     assert interval[0] <= number <= interval[1]
 # endregion
@@ -23,14 +27,20 @@ def assert_path_exists(path: str):
     assert os.path.exists(path)
 
 
-def assert_valid_image(image_path: str):
+def assert_valid_csv_path(csv_path: str):
+    assert csv_path.endswith(".csv")
+
+
+def assert_valid_image_path(image_path: str):
     assert endswith_in(string=image_path, suffices=Image.image_extensions)
-    assert_path_exists(path=image_path)
 
 
-def assert_valid_xml(xml_file_path: str):
+def assert_valid_xml_path(xml_file_path: str):
     assert xml_file_path.endswith(".xml")
-    assert_path_exists(path=xml_file_path)
+
+
+def assert_valid_extension(extension: str):
+    assert extension.startswith(".") and not extension.endswith(".")
 # endregion
 
 
