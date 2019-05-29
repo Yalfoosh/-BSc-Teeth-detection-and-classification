@@ -21,17 +21,13 @@ class Context:
             "IMPLANTAT"
         }
 
-    def __init__(self, name: str, markings: Iterable[Tuple[Tuple[int, int, int, int], str]]):
-        assertion.assert_valid_type(name, str)
-
-        self.name = name
+    def __init__(self, markings: Iterable[Tuple[Tuple[int, int, int, int], str]]):
         self.markings = markings
 
     @staticmethod
     def from_xml(xml_file_path: str):
         assertion.assert_valid_xml_path(xml_file_path=xml_file_path)
 
-        file_name = Path(xml_file_path).stem
         markings = list()
 
         xml_root = ElementTree.parse(xml_file_path).getroot()
@@ -64,7 +60,7 @@ class Context:
 
             markings.append((bounding_box, label))
 
-        return Context(name=file_name, markings=markings)
+        return Context(markings=markings)
 
     def __str__(self):
         to_return = "{}:\n".format(self.name)
@@ -74,22 +70,10 @@ class Context:
 
         return to_return.strip()
 
-    def to_csv(self, name_appendage: str = "", image_folder: str = None, extension: str = ".jpg"):
-        if image_folder is None:
-            image_folder = os.path.abspath(os.path.curdir)
-
-        # region Assertions
-        assertion.assert_valid_type(name_appendage, str)
-
-        assertion.assert_valid_type(image_folder, str)
-        assertion.assert_path_exists(image_folder)
-
-        assertion.assert_valid_type(extension, str)
-        assert extension.startswith(".")
-        # endregion
+    def to_csv(self, image_path: str):
+        assertion.assert_valid_type(image_path, str)
 
         string = ""
-        path = os.path.abspath(os.path.join(image_folder, "{}{}{}".format(self.name, name_appendage, extension)))
 
         for marking in self.markings:
             if marking[0][0] >= marking[0][2] or marking[0][1] >= marking[0][3]:
@@ -106,17 +90,17 @@ class Context:
                 if new_class not in Context.acceptable_markings:
                     continue
 
-            string += "{},{},{},{},{},{}\n".format(path, *marking[0], new_class)
+            string += "{},{},{},{},{},{}\n".format(image_path, *marking[0], new_class)
 
         return string.strip()
 
-    def export_csv(self, destination_path: str, write_mode: selection.WriteMode = selection.WriteMode.Append,
-                   name_appendage: str = "", image_folder: str = None, extension: str = ".jpg"):
+    def export_csv(self, image_path: str,
+                   destination_path: str, write_mode: selection.WriteMode = selection.WriteMode.Append):
         assertion.assert_valid_type(destination_path, str)
         assertion.assert_valid_csv_path(destination_path)
         assertion.assert_valid_type(write_mode, selection.WriteMode)
 
-        csv_string = self.to_csv(name_appendage, image_folder, extension).strip() + "\n"
+        csv_string = self.to_csv(image_path).strip() + "\n"
 
         if write_mode is selection.WriteMode.Overwrite:
             write_mode = "w+"
@@ -202,9 +186,10 @@ class Picture:
         new_picture.image = new_picture.image.filter(ImageFilter.GaussianBlur(radius=radius))
 
         if new_folder_path is not None:
-            new_picture.path = os.path.join(os.path.abspath(new_folder_path), self.name + self.extension)
+            new_picture.path = os.path.join(os.path.abspath(new_folder_path), self.name)
 
-        new_picture.name += " blur " + str(radius)
+        new_picture.name += " blur " + str(radius) + self.extension
+        print("New picture is called: {}".format(new_picture.name))
 
         return new_picture
 
@@ -225,14 +210,16 @@ class Picture:
         new_picture.image = ImageEnhance.Brightness(new_picture.image).enhance(brightness_float)
 
         if new_folder_path is not None:
-            new_picture.path = os.path.join(os.path.abspath(new_folder_path), self.name + self.extension)
+            new_picture.path = os.path.join(os.path.abspath(new_folder_path), self.name)
 
         new_picture.name += " "
 
         if percentage > 0.0:
             new_picture.name += "+"
 
-        new_picture.name += str(round(percentage, 2)) + "%"
+        new_picture.name += str(round(percentage, 2)) + "%" + self.extension
+
+        print("New picture is called: {}".format(new_picture.name))
 
         return new_picture
 
@@ -255,9 +242,8 @@ class LabeledImage:
         assertion.assert_valid_type(csv_path, str)
         assertion.assert_valid_csv_path(csv_path)
 
-        self.picture.save(str(self.picture.path))
-        self.context.export_csv(destination_path=csv_path,
-                                image_folder=str(self.picture.path.parents[0]), extension=self.picture.extension)
+        self.picture.save(str(self.picture.path.absolute()))
+        self.context.export_csv(image_path=str(self.picture.path.absolute()), destination_path=csv_path)
 
     @staticmethod
     def from_xml(xml_file_path, image_path_prefix: str, extension: str = ".jpg"):
@@ -268,7 +254,7 @@ class LabeledImage:
 
         context = Context.from_xml(xml_file_path)
 
-        image_path = os.path.join(image_path_prefix, context.name + extension)
+        image_path = os.path.join(image_path_prefix, Path(xml_file_path).stem + extension)
 
         picture = Picture(image_path)
 

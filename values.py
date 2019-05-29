@@ -21,6 +21,11 @@ class Folder:
     test_data = os.path.join(data, "test")
     mock_data = os.path.join(data, "mock")
 
+    training_csv = os.path.join(training_data, "csv")
+    training_img = os.path.join(training_data, "img")
+    training_img_enhanced = os.path.join(training_data, "img_enhanced")
+    training_xml = os.path.join(training_data, "xml")
+
     mock_csv = os.path.join(mock_data, "csv")
     mock_img = os.path.join(mock_data, "img")
     mock_img_enhanced = os.path.join(mock_data, "img_enhanced")
