@@ -14,7 +14,8 @@ class Image:
 
 
 class Folder:
-    data = os.path.join(os.curdir, "data")
+    base = "F:\Backup\FER\PROJEKT\RetinaNet Tooth Detection"
+    data = os.path.join(base, "data")
 
     training_data = os.path.join(data, "training")
     validation_data = os.path.join(data, "validation")

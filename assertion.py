@@ -19,6 +19,10 @@ def assert_int_in_range(number: int, interval: Tuple[int, int]):
 
 def assert_float_in_range(number: float, interval: Tuple[float, float]):
     assert interval[0] <= number <= interval[1], "{} is not in interval [{}, {}]".format(number, *interval)
+
+
+def assert_tuple_of_size(other: Tuple, size: int):
+    assert len(other) is size
 # endregion
 
 

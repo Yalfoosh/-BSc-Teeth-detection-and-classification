@@ -1,14 +1,14 @@
-import copy
 import os
 import xml.etree.ElementTree as ElementTree
 
 from pathlib import Path
 from PIL import Image, ImageEnhance, ImageFilter
-from typing import Iterable, Tuple
-
+from typing import Iterable, Tuple, List, Tuple
 
 import assertion
 import selection
+
+from util import find_strongest_correlation
 
 
 class Context:
@@ -62,6 +62,18 @@ class Context:
 
         return Context(markings=markings)
 
+    @staticmethod
+    def from_boxes(box_label_tuples: Iterable[Tuple[Tuple[int, int, int, int], str]]):
+        # region Assertions
+        for boxes, label in box_label_tuples:
+            for box in boxes:
+                assertion.assert_valid_type(box, int)
+
+            assertion.assert_valid_type(label, str)
+        # endregion
+
+        return Context(box_label_tuples)
+
     def __str__(self):
         to_return = "{}:\n".format(self.name)
 
@@ -109,6 +121,44 @@ class Context:
 
         with open(destination_path, mode=write_mode) as file:
             file.write(csv_string)
+
+    def match_teeth(self, inferred_context: "Context"):
+        real_label_to_box = dict()
+        inferred_label_to_box = dict()
+
+        for boxes, label in self.markings:
+            if label not in real_label_to_box:
+                real_label_to_box[label] = list()
+
+            real_label_to_box[label].append(boxes)
+
+        for boxes, label in inferred_context.markings:
+            if label not in real_label_to_box:
+                inferred_label_to_box[label] = list()
+
+            real_label_to_box[label].append(boxes)
+
+        max_label_to_result = dict()
+        label_to_result = dict()
+
+        for label in real_label_to_box:
+            max_label_to_result[label] = 0.0
+            label_to_result[label] = 0.0
+
+            if label not in inferred_label_to_box:
+                max_label_to_result[label] = 1.0
+                continue
+
+            for box in real_label_to_box[label]:
+                max_label_to_result[label] += 1.0
+                label_to_result[label] += find_strongest_correlation(box, inferred_label_to_box[label])[1]
+
+        matches = dict()
+
+        for label in real_label_to_box:
+            matches[label] = label_to_result[label] / max_label_to_result[label]
+
+        return matches
 
 
 class Picture:

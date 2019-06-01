@@ -1,4 +1,4 @@
-from typing import List
+from typing import Iterable, Dict, List, Tuple
 
 
 def endswith_in(string: str,
@@ -33,3 +33,26 @@ def endswith_in(string: str,
             return True
 
     return False
+
+
+def intersection_over_union(box_1: Tuple[int, int, int, int], box_2: Tuple[int, int, int, int]) -> float:
+    return 1.0
+
+
+def find_strongest_correlation(box: Tuple[int, int, int, int], boxes: Iterable[Tuple[int, int, int, int]]):
+    correlations = list()
+
+    for polled_box in boxes:
+        correlations.append((polled_box, intersection_over_union(box, polled_box)))
+
+    correlations.sort(key=lambda x: x[1])
+    return correlations.reverse()[0]
+
+
+def error_from_match(matches: Dict[str, float]) -> float:
+    error = 0.0
+
+    for label in matches:
+        error += matches[label]
+
+    return error / len(matches)
